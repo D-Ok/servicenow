@@ -5,6 +5,9 @@ import snabbdom from '@servicenow/ui-renderer-snabbdom';
 import styles from './styles.scss';
 import '@servicenow/now-template-card';
 
+const open_v = "open";
+const delete_v = "delete";
+
 const view = (state, {updateState}) => {
 	const {result = "NULL"} = state;
 	return (
@@ -12,8 +15,8 @@ const view = (state, {updateState}) => {
 			<h2>Insidents</h2>
 			{result.map((data, index)=>(
 				<now-template-card-assist className="card" tagline={{"icon":"tree-view-long-outline","label": data.sys_class_name}}
-										  actions={[{"id":"open "+ data.sys_id,"label":"Open Record"},
-											  {"id":"delete "+ data.sys_id,"label":"Delete"}]}
+										  actions={[{"id":open_v+" "+ data.sys_id,"label":"Open Record"},
+											  {"id":delete_v+" "+ data.sys_id,"label":"Delete"}]}
 										  heading={{"label": data.short_description}}
 										  content={[{"label":"Number","value":{"type":"string","value": data.number}},
 											  {"label":"State","value":{"type":"string","value": data.state}},
@@ -31,6 +34,8 @@ const FETCH_CARD= 'FETCH_CARD';
 const FETCH_SUCCEEDED = 'FETCH_SUCCEEDED';
 const FETCH_FAILED = 'FETCH_FAILED';
 const SELECT_DROPDOWN = 'NOW_DROPDOWN_PANEL#ITEM_CLICKED';
+const DELETE_CARD = "CARD_DELETED"
+const OPEN_CARD = "CARD_OPENED"
 
 createCustomElement('x-523977-incident-list-1', {
 	actionHandlers: {
@@ -60,7 +65,20 @@ createCustomElement('x-523977-incident-list-1', {
 			 const toDo = action.payload.item.id.split(' ');
 			 const action_type = toDo[0];
 			 const card_id = toDo[1];
-			
+			 if(action_type==open_v) 
+			 	dispatch(OPEN_CARD);
+			 else 
+			 	dispatch(DELETE_CARD);
+		 },
+		 DELETE_CARD: (coeffects) =>{
+		 	const { action, updateState } = coeffects;
+			const { result } = action.payload;
+		 	console.log("delete");
+		 },
+		 OPEN_CARD: (coeffects) =>{
+		 	const { action, updateState } = coeffects;
+			const { result } = action.payload;
+		 	console.log("open");
 		 }
 	},
 	renderer: {type: snabbdom},
