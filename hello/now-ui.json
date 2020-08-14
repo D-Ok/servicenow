@@ -1,0 +1,14 @@
+{
+	"components": {
+	    "x-523977-hello-world": {
+	        "innerComponents": [],
+          "uiBuilder": {
+             "associatedTypes": ["global.core"],
+             "label": "My Stock Tracker",
+             "icon": "chart-forecast-fill",
+             "description": "Stock Tracking component"
+           }
+	    }
+	},
+	"scopeName": "x_523977_myorg_h_2"
+}
